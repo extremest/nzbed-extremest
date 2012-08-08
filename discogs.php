@@ -8,7 +8,7 @@ class discogs{
 	const _API_URL_ID_ = "http://api.discogs.com/";
 	
 	var $_def = array(
-			'url' => '/^(?:http:\/\/)?(?:www\.)?discogs.com\//i',
+			'url' => '/discogs.com\/[a-z-]+\/(master|release)\/(\d+)/i',
 			'urls' => array(
 					'search' => 'http://www.google.com/search?hl=en&q=%s+site:discogs.com'
 			),
@@ -68,13 +68,12 @@ class discogs{
 
 	function checkCache( $search ){
 		global $api;
-
 		$res = $api->db->select( '*', 'discogs_search', array('search' => $search ), __FILE__, __LINE__ );
 		$nRows = $api->db->rows( $res );
 		if ( $nRows >= 1 )
 		{
 			$row = $api->db->fetch( $res );
-			return $row;
+			return $row->albumID;
 		}else{
 			return false;
 		}
@@ -93,6 +92,8 @@ class discogs{
 			if( ( $result = $this->getAlbumfromdb($urlinfo['2']) ) != false)
 			{
 				return $result;
+			}elseif( ( $album = $this->getAlbum($id) ) != false){
+				return $album;
 			}
 		}
 		return false;
@@ -123,7 +124,6 @@ class discogs{
 			$album = array(
 					'albumID' => $result['id'],
 					'artist' => $result['artists'][0]['name'],
-					'artistID' => $result['artists'][0]['id'],
 					'title' => preg_replace( $this->_def['regex']['title'],"",$result['title']),
 					'year' => $result['year'],
 					'genre' => $genstr,
@@ -152,8 +152,9 @@ class discogs{
 		}
 	}
 
-	function searchGoogle($query){
-		$query = urlencode($query);
+	function searchGoogle($search){
+		global $api;
+		$query = urlencode($search);
 		$url = sprintf($this->_def['urls']['search'], $query.'+master');
 		if($this->_debug) printf( "google url: %s \n", $url );
 		if( ($page = $this->getUrl($url) ) != false){
@@ -162,6 +163,14 @@ class discogs{
 				if ( preg_match( $regex, $page, $gsUrl) )
 				{
 					if ( $this->_debug ) echo 'gsUrl: '.$gsUrl[0]." \n";
+					$res = $api->db->select( '*', 'discogs_search', array( 'albumID' => $gsUrl[2] ), __FILE__, __LINE__ );
+					$nRows = $api->db->rows( $res );
+					if( $nRows >= 1 )
+					{
+						$api->db->update( 'discogs_search', array( 'search' => $search ), array( 'albumID' => $gsUrl[2], 'type' => $gsUrl[1] ),  __FILE__, __LINE__ );
+					}else{
+						$api->db->insert( 'discogs_search', array( 'search' => $search, 'albumID' => $gsUrl[2], 'type' => $gsUrl[1] ), __FILE__, __LINE__ );
+					}
 					$id['id'] = $gsUrl[2];
 					$id['type'] = $gsUrl[1];
 					return $id;
@@ -177,6 +186,14 @@ class discogs{
 					if ( preg_match( $regex, $page, $gsUrl) )
 					{
 						if ( $this->_debug ) echo 'gsUrl: '.$gsUrl[0]." \n";
+						$res = $api->db->select( '*', 'discogs_search', array( 'albumID' => $gsUrl[2] ), __FILE__, __LINE__ );
+						$nRows = $api->db->rows( $res );
+						if( $nRows >= 1 )
+						{
+							$api->db->update( 'discogs_search', array( 'search' => $search ), array( 'albumID' => $gsUrl[2], 'type' => $gsUrl[1] ),  __FILE__, __LINE__ )	;
+						}else{
+							$api->db->insert( 'discogs_search', array( 'search' => $search, 'albumID' => $gsUrl[2], 'type' => $gsUrl[1] ), __FILE__, __LINE__ );
+						}
 						$id['id'] = $gsUrl[2];
 						$id['type'] = $gsUrl[1];
 						return $id;
