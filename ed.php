@@ -79,7 +79,7 @@ class ed
 							'720p' => '/(720p|\.?720)/i',
 							'1080i' => '/1080i/i',
 							'1080p' => '/1080p/i',
-							'3D' => '/\b(3d|sbs|h[-. ]?sbs|half[-. ]?sbs)\b/i'
+							'3D' => '/\b(3d|sbs|h[-. ]?sbs|half[-. ]?sbs|f[-. ]?sbs|full[-. ]?sbs)\b/i'
 					),
 					'Audio' => array(
 							'AC3/DD' => '/(ac3|dd[25]\.?[01]|5\.1)/i',
@@ -87,7 +87,7 @@ class ed
 							'MP3' => '/mp3/i',
 							'AAC' => '/aac/i',
 							'Ogg' => '/\bogg\b/i',
-							'Lossless' => '/(flac|lossless)/i'
+							'Lossless' => '/\b(flac|lossless|dts-?(hd|hdma)|true-?hd)\b/i'
 					),
 					'ConsolePlatform' => array(
 							'Xbox' => '/Xbox/i',
@@ -114,7 +114,7 @@ class ed
 							'French' => '/((french)|(multi5))/i',
 							'German' => '/((\.+DL\.+)|(german(?!.sub?.))|(deutsch)|(multi(5|3)))/i',
 							'Spanish' => '/((spanish)|(multi5))/i',
-							'Italian' => '/((italian)|(multi(5|3)))/i',
+							'Italian' => '/((italian)|(multi(5|3))|((?<!\w)(ita)(?!\w)))/i',
 							'Dutch' => '/((dutch))/i',
 							'Polish' => '/((\.+PL\.+))/i',
 							'Swedish' => '/swedish/i'
@@ -127,7 +127,7 @@ class ed
 					'Subtitle' => array(
 							'French' => '/((vostfr)|(vost))/i',
 							'German' => '/(german.sub)/i',
-							'Dutch' => '/((nlsubs)|(nl.?subbed))/i'
+							'Dutch' => '/((nlsubs)|(nl.?subs)|(nl.?subbed))/i'
 					),
 			),
 			'filmMatch' => array(
@@ -152,22 +152,80 @@ class ed
 			'siteAttributes' => array(
 					'videogenre' => array(
 							'Action' => 'Action/Adv',
+							'Action & Adventure' => 'Action/Adv',
+							'Action and Adventure' => 'Action/Adv',						
 							'Adventure' => 'Action/Adv',
+							'Animation' => 'Animation',							
+							'Arts & Crafts' => 'Family',
+							'Automobiles' => 'Family',
+							'Biography' => 'Documentary',							
+							'Buy, Sell & Trade' => 'Reality',
 							'Celebrities' => 'Reality',
-							'Dance' => 'Reality',
+							'Children' => 'Children',
+							'Comedy' => 'Comedy',
+							'Cooking/Food' => 'Reality',
+							'Crime' => 'Crime',
+							'Current Events' => 'Reality',
+							'Dance' => 'Family',
+							'Debate' => 'Reality',
+							'Design/Decorating' => 'Reality',
 							'Disaster' => 'Action/Adv',
+							'Discovery/Science' => 'Documentary',
+							'Documentary' => 'Documentary',
+							'Drama' => 'Drama',
+							'Education' => 'Documentary',
+							'Educational' => 'Documentary',
+							'Family' => 'Family',
+							'Fantasy' => 'Fantasy',
+							'Fashion/Makeup' => 'Family',
+							'Financial/Business' => 'Reality',
+							'Fitness' => 'Family',
+							'Game-Show' => 'Family',
+							'Game Show' => 'Reality',							
+							'Garden/Landscape' => 'Reality',
+							'History' => 'Documentary',
+							'Home and Garden' => 'Family',							
+							'Horror' => 'Horror',							
+							'Horror/Supernatural' => 'Horror',
+							'Housing/Building' => 'Reality',
+							'How To/ Do It Yourself' => 'Reality',
+							'Interview' => 'Reality',
+							'Kids' => 'Children',							
 							'Lifestyle' => 'Reality',
-							'Military' => 'War',
+							'Military/War' => 'War',
 							'Music' => 'Musical',
+							'Musical' => 'Musical',							
+							'Mystery' => 'Mystery',
+							'News' => 'Reality',							
+							'Pets/Animals' => 'Family',
+							'Politics' => 'Documentary',
+							'Reality' => 'Reality',
+							'Reality-TV' => 'Reality',												
 							'Religion' => 'Family',
-							'Science Fiction' => 'Sci-Fi',
-							'Soaps' => 'Comedy',
+							'Romance' => 'Romance',							
+							'Romance/Dating' => 'Romance',
+							'Science Fiction' => 'SciFi',
+							'Science-Fiction' => 'SciFi',							
+							'Sci-Fi' => 'SciFi',
+							'Sketch/Improv' => 'Comedy',
+							'Soap' => 'Drama',							
+							'Soaps' => 'Drama',
+							'Sport' => 'Sport',							
 							'Sports' => 'Sport',
 							'Sporting Event' => 'Sport',
-							'Sports Film' => 'Sport',
-							'Suspense' => 'Thriller',
+							'Sports Film' => 'Sport',													
+							'Super Heroes' => 'Action/Adv',
+							'Suspense' => 'Thriller',							
 							'Talent' => 'Reality',
-							'Teens' => 'Family'
+							'Talk-Show' => 'Reality',
+							'Talk Show' => 'Family',												
+							'Tech/Gaming' => 'Reality',
+							'Teens' => 'Family',
+							'Thriller' => 'Thriller',
+							'Travel' => 'Reality',
+							'War' => 'War',							
+							'Western' => 'Western',
+							'Wildlife' => 'Documentary'
 					),
 					'class' => array(
 							'Animation' => 'Animation',
@@ -228,7 +286,8 @@ class ed
 							'Consoles' => 2,
 							'Games' => 4,
 							'Music' => 7,
-							'Anime' => 11
+							'Anime' => 11,
+							'Books' => 13
 					),
 					'categoryGroups' => array(
 							'Movies' => array( 'Format', 'Source', 'VideoGenre', 'Audio', 'Region', 'Language', 'Subtitle' ),
@@ -237,6 +296,7 @@ class ed
 							'Games' => array( 'Media', 'GameGenre', 'Language' ),
 							'Music' => array( 'Audio', 'AudioGenre' ),
 							'Anime' => array( 'Anime', 'Format', 'Language', 'Subtitle' ),
+							'Books' => array( 'Language', 'BookType', 'BookGenre' ),
 							'All' => array( 'Format', 'Source', 'VideoGenre', 'Audio', 'Region', 'Media', 'ConsolePlatform', 'GameGenre', 'AudioGenre', 'Language', 'Anime', 'Subtitle' )
 					),
 					'attributeGroups' => array(
@@ -251,7 +311,9 @@ class ed
 							'AudioGenre' => 'ps_rb_audio_genre',
 							'Language' => 'ps_rb_language',
 							'Anime' => 'ps_rb_anime',
-							'Subtitle' => 'ps_rb_subtitle'
+							'Subtitle' => 'ps_rb_subtitle',
+							'BookType' => 'ps_rb_book_type',
+							'BookGenre' => 'ps_rb_book_genre'
 					),
 					'attributeID' => array(
 							'Source' => array(
@@ -417,6 +479,28 @@ class ed
 									'Finnish' => 65536,
 									'Turkish' => 262144
 							),
+							'BookType' => array(
+									'Audio' => 16,
+									'Fiction' => 1,
+									'Non-Fiction' => 2,
+									'Interactive' => 32,
+									'Magazine' => 8,
+									'Comic' => 4
+							),
+							'BookGenre' => array(
+									'Action/Adv' => 2048,
+									'Education' => 8,
+									'Fantasy' => 1024,
+									'History' => 32,
+									'Horror' => 64,
+									'Mystery' => 8192,
+									'Reference' => 4,
+									'Religion' => 128,
+									'Romance' => 256,
+									'Sci-Fi' => 512,
+									'Technical' => 16,
+									'Thriller' => 4096
+							)
 					)
 			),
 			'attributeExclude' => array(
@@ -494,6 +578,8 @@ class ed
 				return $this->gameQuery( $string, $cat );
 			case 11:
 				return $this->animeQuery( $string );
+			case 13:
+				return $this->bookQuery( $string );
 			default:
 				if ( $cat > 20 )
 				{
@@ -504,6 +590,18 @@ class ed
 					$this->_error = 'No Category Determined, please select Category manually';
 					return false;
 				}
+		}
+	}
+	
+	function bookQuery( $string )
+	{
+		global $api;
+		if ( $this->_debug ) printf("bookQuery( string:%s )\n", $string );
+		if ( ( $result = $api->books->search( $string, $this->ignoreCache ) ) != false)
+		{
+			return $result;
+		}else{
+			return false;
 		}
 	}
 
@@ -552,7 +650,7 @@ class ed
 		$old= '';
 		while( strcmp( $string, $old ) != 0 )
 		{
-			if ( ( $game = $api->games->search( $string, $this->ignoreCache ) ) !== false )
+			if ( ( $game = $api->games->search( $string, $type, $this->ignoreCache ) ) !== false )
 			{
 				return $game;
 			}

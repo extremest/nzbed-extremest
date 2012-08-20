@@ -14,6 +14,7 @@ require_once( INCLUDEPATH.'movies.php' );
 require_once( INCLUDEPATH.'games.php' );
 require_once( INCLUDEPATH.'anime.php' );
 require_once( INCLUDEPATH.'music.php' );
+require_once( INCLUDEPATH.'books.php' );
 
 require_once( 'XML/Serializer.php' );
 
@@ -28,6 +29,7 @@ class api
 	var $anime;
 	var $movies;
 	var $music;
+	var $books;
 	var $ext_Array;// this will hold all the extensions as well makes it quicker to scan for a url match  also may use it later for rest
 
 	function api( $ids, $cache )
@@ -41,6 +43,7 @@ class api
 		$this->games = new games();
 		$this->anime = new anime();
 		$this->music = new music();
+		$this->books = new books();
 		$this->ed = $ed;
 		$this->ext_Array[]= $this->tv;
 		$this->ext_Array[]= $this->movies;
@@ -179,6 +182,12 @@ if ( isset( $_REQUEST['q'] ) )
 				break;
 			case 1:
 				$api->movies->setPrimary( 'imdb' );
+				break;
+			case 2:
+				$api->tv->setPrimary( 'tvrage' );
+				break;
+			case 3:
+				$api->tv->setPrimary( 'tvdb' );
 				break;
 		}
 	}
